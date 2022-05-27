@@ -1,0 +1,65 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'opensearch.opensearchplugin'
+
+opensearchplugin {
+    name 'neuralsearch-plugin'
+    description 'Neural Search Query plugin for OpenSearch'
+    classname 'org.neural.search.opensearch.plugins.NeuralSearchPlugin'
+    extendedPlugins = ['opensearch-knn']
+    licenseFile rootProject.file('LICENSE.txt')
+    noticeFile rootProject.file('NOTICE.txt')
+}
+
+
+// disabling some unnecessary validations for this plugin
+testingConventions.enabled = false
+loggerUsageCheck.enabled = false
+validateNebulaPom.enabled = false
+
+forbiddenApisMain.enabled = false
+licenseHeaders.enabled = false 
+forbiddenPatterns.enabled = false
+
+dependencyLicenses.enabled = false
+thirdPartyAudit.enabled = false
+jarHell.enabled = true
+buildscript {
+    ext {
+        opensearch_version = System.getProperty("opensearch.version", "1.3.2")
+        opensearch_group = "org.opensearch"
+    }
+    repositories {mavenLocal()
+        mavenCentral()
+        jcenter()
+        
+    }
+
+    dependencies {
+        classpath "org.opensearch.gradle:build-tools:1.3.2"
+        //classpath 'org.opensearch:opensearch-knn:1.2.2.0'
+    }    
+
+}
+
+
+dependencies {
+
+    compileOnly 'org.opensearch:opensearch-knn:1.3.2.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.6'
+
+
+    /*implementation ('org.neural.transformers:bert:1.0.0')
+    {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+    }*/
+}
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
